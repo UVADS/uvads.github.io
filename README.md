@@ -1,4 +1,4 @@
-The Standard Stack for Data Science:
+### The Standard Stack for Data Science:
 
 - [**Git Basics**](https://uvads.github.io/git-basics)
 - [**Containers**](https://uvads.github.io/container-basics/)
