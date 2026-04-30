@@ -1,6 +1,6 @@
 ## The Standard Stack
 
-- **Managing Your Environment**
+- [**Managing Your Environment**](https://uvads.github.io/managing-environments/)
 - [**Git Basics**](https://uvads.github.io/git-basics)
 - **Compute Resources**
 - **Storage**
