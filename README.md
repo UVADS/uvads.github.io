@@ -1,13 +1,13 @@
 ## The Standard Stack
 
-- [**Git Basics**](https://uvads.github.io/git-basics)
-- [**Containers**](https://uvads.github.io/container-basics/)
-- [**Workflows**](https://uvads.github.io/workflow-basics/)
-- **Databases**
-- **Storage**
-- **Compute**
 - **Managing Your Environment**
-- [**Streaming Data**](https://github.com/UVADS/learn-kafka)
+- [**Git Basics**](https://uvads.github.io/git-basics)
+- **Compute Resources**
+- **Storage**
+- **Working with Databases**
+- [**Using and Building Containers**](https://uvads.github.io/container-basics/)
+- [**Workflow Orchestration**](https://uvads.github.io/workflow-basics/)
+- [**Consuming Streaming Data**](https://github.com/UVADS/learn-kafka)
 
 ## Python Resources
 
