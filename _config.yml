@@ -48,7 +48,7 @@ nav_external_links:
     url: https://datascience.virginia.edu
     hide_icon: false
 
-footer_content: "Maintained by the <a href=\"https://datascience.virginia.edu\">UVA School of Data Science</a>."
+footer_content: "&copy; 2026 Maintained by the <a href=\"https://datascience.virginia.edu\">UVA School of Data Science</a>."
 
 # "Edit this page on GitHub" links
 gh_edit_link: true

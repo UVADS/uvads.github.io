@@ -17,7 +17,7 @@ School of Data Science.
 
 ---
 
-## The Standard Stack
+## Systems Essentials
 
 - [**Managing Your Environment**](https://uvads.github.io/managing-environments/)
 - [**Git Basics**](https://uvads.github.io/git-basics)
