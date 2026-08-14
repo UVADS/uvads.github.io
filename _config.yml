@@ -66,3 +66,10 @@ callouts:
   warning:
     title: Warning
     color: yellow
+
+# Repo docs, not site content. GitHub Pages always loads
+# jekyll-optional-front-matter, which otherwise turns any root Markdown file
+# into a published page and puts it in the nav.
+exclude:
+  - CLAUDE.md
+  - README.md
