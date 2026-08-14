@@ -66,9 +66,3 @@ callouts:
   warning:
     title: Warning
     color: yellow
-
-exclude:
-  - Gemfile
-  - Gemfile.lock
-  - vendor/
-  - .bundle/

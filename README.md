@@ -9,13 +9,16 @@ Jekyll builds from the repository root; page content lives in `docs/`.
 
 ```
 _config.yml         # site + theme configuration
-Gemfile             # local preview only
 docs/               # page source
   index.md          # home page (permalink: /)
   storage.md
 .github/workflows/
   jekyll-gh-pages.yml   # builds and deploys on every push to main
 ```
+
+There is no Gemfile and nothing to install. GitHub builds the site with its own
+pinned `github-pages` gem bundle, which already includes every plugin listed in
+`_config.yml`.
 
 The theme is loaded with `remote_theme` in `_config.yml`, so its CSS and JS
 come from the upstream repo at build time. Upgrading is a one-line change: bump
@@ -37,21 +40,19 @@ nav_order: 3
 2). For a section with child pages, see
 [Navigation structure](https://just-the-docs.com/docs/navigation-structure/).
 
-## Preview locally
-
-From the repository root:
-
-```bash
-bundle install
-bundle exec jekyll serve --livereload
-```
-
-Then open <http://localhost:4000/>. Pages under `docs/` are served at
-`/docs/<name>.html`. The home page is the exception, since its `permalink: /`
-front matter moves it to the site root.
+Pages under `docs/` are published at `/docs/<name>.html`. The home page is the
+exception, since its `permalink: /` front matter moves it to the site root.
 
 ## Publishing
 
-The `.github/workflows/jekyll-gh-pages.yml` workflow builds and deploys the site
-on every push to `main`. The repository's **Settings → Pages** source must be set
-to **GitHub Actions** (not a branch and folder) for that workflow to publish.
+Push to `main`. The `.github/workflows/jekyll-gh-pages.yml` workflow builds and
+deploys on every push, and the repository's **Settings → Pages** source must be
+set to **GitHub Actions** (not a branch and folder) for it to publish.
+
+There is no local preview step, so the Actions run is the build. To watch it:
+
+```bash
+gh run watch
+```
+
+A push usually takes two to three minutes to appear on the live site.
