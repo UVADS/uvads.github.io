@@ -1,7 +1,7 @@
 ---
 title: Storage
 layout: default
-nav_order: 2
+nav_order: 5
 description: What block storage and object storage actually are, what each one costs you, and how to pick.
 ---
 

@@ -1,7 +1,7 @@
 ---
-title: Databases
+title: Working with Databases
 layout: default
-nav_order: 3
+nav_order: 6
 description: Relational databases and NoSQL databases, what each is actually for, and how to choose for a data science project.
 ---
 

@@ -9,10 +9,12 @@ Jekyll builds from the repository root; page content lives in `docs/`.
 
 ```
 _config.yml         # site + theme configuration
-docs/               # page source
+docs/               # page source, one file per left-nav entry
   index.md          # home page (permalink: /)
   storage.md
   databases.md
+  compute.md        # placeholder, not written yet
+  *.md              # the rest are redirect stubs to guides in other repos
 .github/workflows/
   jekyll-gh-pages.yml   # builds and deploys on every push to main
 ```
@@ -37,9 +39,17 @@ nav_order: 3
 ---
 ```
 
-`nav_order` controls the position in the left-hand nav (Home is 1, Storage 2,
-Databases 3). For a section with child pages, see
+`nav_order` controls the position in the left-hand nav. The nav mirrors the
+Systems Essentials list on the home page, so the numbers are already taken:
+Home 1, Managing Your Environment 2, Git Basics 3, Compute Resources 4,
+Storage 5, Working with Databases 6, Containers 7, Workflow Orchestration 8,
+Consuming Streaming Data 9. For a section with child pages, see
 [Navigation structure](https://just-the-docs.com/docs/navigation-structure/).
+
+Topics whose guide lives in another repo get a stub page here that holds the
+nav position and forwards to the real site. The theme can only render external
+links after all local pages, so a stub is the only way to keep one topic order
+across the nav and the home page.
 
 Pages under `docs/` are published at `/docs/<name>.html`. The home page is the
 exception, since its `permalink: /` front matter moves it to the site root.
