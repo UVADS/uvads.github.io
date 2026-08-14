@@ -2,7 +2,7 @@
 title: Working with Databases
 layout: default
 nav_order: 6
-description: Relational databases and NoSQL databases, what each is actually for, and how to choose for a data science project.
+description: Relational databases, NoSQL databases, and DuckDB, what each is actually for, and how to choose for a data science project.
 ---
 
 # Database Basics
@@ -240,10 +240,146 @@ you stale answers, which is its own category of confusing bug.
 
 ---
 
+## DuckDB, the one that reads your files where they sit
+
+DuckDB belongs in neither box above, and it's worth meeting early because it
+deletes a step you have probably been doing by hand for years.
+
+It is a real relational database: SQL, tables, joins, window functions, all of
+it. It is also embedded the way SQLite is, so there's no server, no port, no
+user accounts, and no daemon to remember to start. `pip install duckdb` and
+you're done. The difference from SQLite is what it's tuned for. SQLite is built
+for many small reads and writes of individual rows; DuckDB stores data by column
+and processes it in batches, which is what makes it tear through aggregate
+queries over millions of rows on an ordinary laptop.
+
+The part that changes how you work is that it queries data files directly.
+Nothing gets loaded or imported first.
+
+```sql
+SELECT species, avg(body_mass_g)
+FROM 'penguins.csv'
+GROUP BY species;
+```
+
+That is the entire program. No `CREATE TABLE`, no import step, no waiting.
+Replace the filename with `'data/*.parquet'` and it reads a whole directory as
+one table. Point it at `'s3://my-bucket/year=2026/*.parquet'` and it reads
+straight from object storage, fetching only the columns and row groups your
+query actually touches rather than the whole file. On a 40 GB Parquet dataset
+where you asked for two columns and one date range, that is the difference
+between minutes and hours, and between a small egress bill and a memorable one.
+
+<svg viewBox="0 0 640 280" width="100%" style="max-width:640px;height:auto;display:block;margin:1.5rem auto;" role="img" aria-labelledby="duck-title">
+  <title id="duck-title">DuckDB driven from a CLI, Python, R or a notebook, reading CSV, Parquet and JSON files locally, in S3, and in other databases</title>
+  <g font-family="system-ui,sans-serif">
+    <text x="69" y="44" text-anchor="middle" fill="#6b7280" font-size="10.5">drive it from</text>
+    <g font-size="11.5">
+      <rect x="14" y="58" width="110" height="36" rx="6" fill="#ffffff" stroke="#232D4B" stroke-width="2"/>
+      <text x="69" y="81" text-anchor="middle" fill="#232D4B">duckdb CLI</text>
+      <rect x="14" y="104" width="110" height="36" rx="6" fill="#ffffff" stroke="#232D4B" stroke-width="2"/>
+      <text x="69" y="127" text-anchor="middle" fill="#232D4B">Python</text>
+      <rect x="14" y="150" width="110" height="36" rx="6" fill="#ffffff" stroke="#232D4B" stroke-width="2"/>
+      <text x="69" y="173" text-anchor="middle" fill="#232D4B">R</text>
+      <rect x="14" y="196" width="110" height="36" rx="6" fill="#ffffff" stroke="#232D4B" stroke-width="2"/>
+      <text x="69" y="219" text-anchor="middle" fill="#232D4B">notebook</text>
+    </g>
+    <g stroke="#E57200" stroke-width="2.5" fill="none">
+      <path d="M124 76 C 170 76, 170 150, 210 150"/>
+      <path d="M124 122 C 170 122, 170 150, 210 150"/>
+      <path d="M124 168 C 170 168, 170 150, 210 150"/>
+      <path d="M124 214 C 170 214, 170 150, 210 150"/>
+    </g>
+    <rect x="210" y="95" width="180" height="110" rx="8" fill="#232D4B"/>
+    <text x="300" y="128" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="700">DuckDB</text>
+    <text x="300" y="150" text-anchor="middle" fill="#c9d1e3" font-size="11">one binary, no server</text>
+    <text x="300" y="168" text-anchor="middle" fill="#c9d1e3" font-size="11">SQL in, DataFrame out</text>
+    <text x="300" y="186" text-anchor="middle" fill="#c9d1e3" font-size="11">reads only what it needs</text>
+    <g stroke="#E57200" stroke-width="2.5" fill="none">
+      <path d="M390 150 C 430 150, 430 68, 470 68"/>
+      <path d="M390 150 C 430 150, 430 114, 470 114"/>
+      <path d="M390 150 C 430 150, 430 160, 470 160"/>
+      <path d="M390 150 C 430 150, 430 206, 470 206"/>
+    </g>
+    <text x="548" y="40" text-anchor="middle" fill="#6b7280" font-size="10.5">it reads, in place</text>
+    <g font-family="ui-monospace,monospace" font-size="10.5">
+      <rect x="470" y="50" width="156" height="36" rx="6" fill="#dbe3f0" stroke="#232D4B" stroke-width="1.5"/>
+      <text x="548" y="73" text-anchor="middle" fill="#232D4B">data.csv, data.json</text>
+      <rect x="470" y="96" width="156" height="36" rx="6" fill="#dbe3f0" stroke="#232D4B" stroke-width="1.5"/>
+      <text x="548" y="119" text-anchor="middle" fill="#232D4B">data.parquet</text>
+      <rect x="470" y="142" width="156" height="36" rx="6" fill="#dbe3f0" stroke="#232D4B" stroke-width="1.5"/>
+      <text x="548" y="165" text-anchor="middle" fill="#232D4B">s3://bucket/*.parquet</text>
+      <rect x="470" y="188" width="156" height="36" rx="6" fill="#dbe3f0" stroke="#232D4B" stroke-width="1.5"/>
+      <text x="548" y="211" text-anchor="middle" fill="#232D4B">Postgres, SQLite</text>
+    </g>
+    <text x="320" y="262" text-anchor="middle" fill="#6b7280" font-size="12">The data never moves. One query can span a local file, a bucket, and a database.</text>
+  </g>
+</svg>
+
+### Poking around by hand
+
+Run `duckdb` with no arguments and you get a shell that prints proper boxed
+tables, so answering "what is actually in this file" takes one line instead of a
+notebook:
+
+```bash
+duckdb -c "DESCRIBE SELECT * FROM 'readings.parquet'"
+duckdb -c "SELECT count(*) FROM 's3://my-bucket/logs/*.json'"
+duckdb -c "FROM 'readings.parquet' LIMIT 20"
+```
+
+That last one is not a typo. DuckDB lets you start a query with `FROM`, which
+makes quick looks quicker. Recent versions also ship a local browser interface
+with `duckdb -ui` if you'd rather click through a dataset than type at it.
+
+### The same thing from code
+
+```python
+import duckdb
+
+df = duckdb.sql("""
+    SELECT station, date_trunc('day', ts) AS day, max(temp_c)
+    FROM 's3://my-bucket/readings/*.parquet'
+    WHERE station = 'CHO'
+    GROUP BY 1, 2
+""").df()
+```
+
+`.df()` hands back a pandas DataFrame, and `.arrow()` or `.pl()` give you Arrow
+or Polars instead. It works in the other direction too: a DataFrame sitting in
+memory is queryable by its variable name, so you can drop into SQL for the one
+join that's awkward in pandas and come straight back out, without writing
+anything to disk.
+
+```python
+import pandas as pd, duckdb
+
+readings = pd.read_csv("readings.csv")
+duckdb.sql("SELECT station, max(temp_c) FROM readings GROUP BY station").df()
+```
+
+The connector part goes further than files. DuckDB can `ATTACH` a running
+Postgres, MySQL, or SQLite database and query it as though its tables were
+local, which means one statement can join a Parquet file in a bucket against a
+table in your department's Postgres. That is usually the moment people stop
+thinking of it as a database and start thinking of it as the thing that talks to
+everything else.
+
+**Where it hurts.** It's built for one process at a time. Several readers are
+fine, but it is not an application backend and it will not serve concurrent web
+traffic, so Postgres keeps that job. It runs in memory unless you hand it a file
+to persist to, and while it spills to disk for many operations that exceed RAM,
+not every operation does. It also moves fast as a project, having only reached
+1.0 in 2024, so pin your version if you care about reproducibility.
+
+---
+
 ## Picking one
 
 | Situation | Use |
 |:---|:---|
+| Questions about files you already have, local or in a bucket | DuckDB |
+| Analytics over millions of rows on one machine | DuckDB |
 | Records that all share the same fields | Relational |
 | You need to combine data from several places in one query | Relational |
 | Correctness matters more than raw write speed | Relational |
@@ -254,11 +390,10 @@ you stale answers, which is its own category of confusing bug.
 | Counters, sessions, rate limits, queues, leaderboards | Redis |
 
 {: .note }
-For a single-user project on your laptop, SQLite deserves a look before you set
-up any server at all. It's one file, it ships with Python as `sqlite3`, there is
-nothing to install or run, and it speaks ordinary SQL. Plenty of analysis work
-never needs more, and moving to Postgres later is a small step because the
-queries mostly carry over.
+For a single-user project on your laptop, reach for DuckDB before you set up any
+server at all. There is nothing to install beyond a `pip install`, nothing to
+run, and it speaks ordinary SQL, so the queries carry over if you outgrow it and
+move to Postgres later. Plenty of analysis work never needs more than this.
 
 Real systems commonly run two of these at once, and the split is usually the
 same: Postgres holds the authoritative data, and Redis holds a fast copy of
@@ -273,5 +408,6 @@ something else when you can name the specific problem it solves.
 - [MySQL documentation](https://dev.mysql.com/doc/)
 - [MongoDB manual](https://www.mongodb.com/docs/manual/)
 - [Redis documentation](https://redis.io/docs/latest/)
-- [SQLite](https://www.sqlite.org/whentouse.html) on when it's the right choice,
-  which is more often than people expect.
+- [DuckDB documentation](https://duckdb.org/docs/), and its
+  [data import guide](https://duckdb.org/docs/stable/data/overview) for reading
+  files and buckets directly.
