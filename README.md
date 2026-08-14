@@ -12,6 +12,7 @@ _config.yml         # site + theme configuration
 docs/               # page source
   index.md          # home page (permalink: /)
   storage.md
+  databases.md
 .github/workflows/
   jekyll-gh-pages.yml   # builds and deploys on every push to main
 ```
@@ -36,8 +37,8 @@ nav_order: 3
 ---
 ```
 
-`nav_order` controls the position in the left-hand nav (Home is 1, Storage is
-2). For a section with child pages, see
+`nav_order` controls the position in the left-hand nav (Home is 1, Storage 2,
+Databases 3). For a section with child pages, see
 [Navigation structure](https://just-the-docs.com/docs/navigation-structure/).
 
 Pages under `docs/` are published at `/docs/<name>.html`. The home page is the
