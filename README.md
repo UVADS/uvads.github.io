@@ -39,11 +39,10 @@ nav_order: 3
 ```
 
 `nav_order` controls the position in the left-hand nav. The nav mirrors the
-Systems Essentials list on the home page, so the numbers are already taken:
-Home 1, Managing Your Environment 2, Git Basics 3, Storage 5, Working with
-Databases 6, Containers 7, Workflow Orchestration 8, Consuming Streaming Data
-9. Slot 4 is deliberately empty and reserved for Compute Resources, which the
-home page lists but nobody has written yet. For a section with child pages, see
+Systems Essentials list on the home page, so 1 through 9 are already taken:
+Home, Managing Your Environment, Git Basics, Compute Resources, Storage,
+Working with Databases, Using and Building Containers, Workflow Orchestration,
+Streaming Data. For a section with child pages, see
 [Navigation structure](https://just-the-docs.com/docs/navigation-structure/).
 
 Topics whose guide lives in another repo get a stub page here that holds the

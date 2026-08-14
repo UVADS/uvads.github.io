@@ -26,7 +26,7 @@ School of Data Science.
 - [**Working with Databases**]({{ site.baseurl }}/docs/databases.html)
 - [**Using and Building Containers**](https://uvads.github.io/container-basics/)
 - [**Workflow Orchestration**](https://uvads.github.io/workflow-basics/)
-- [**Consuming Streaming Data**](https://github.com/UVADS/learn-kafka)
+- [**Streaming Data**](https://github.com/UVADS/learn-kafka)
 
 ## Python Resources
 
