@@ -22,7 +22,7 @@ School of Data Science.
 - [**Managing Your Environment**](https://uvads.github.io/managing-environments/)
 - [**Git Basics**](https://uvads.github.io/git-basics)
 - **Compute Resources**
-- **Storage**
+- [**Storage**]({{ site.baseurl }}/docs/storage.html)
 - **Working with Databases**
 - [**Using and Building Containers**](https://uvads.github.io/container-basics/)
 - [**Workflow Orchestration**](https://uvads.github.io/workflow-basics/)
