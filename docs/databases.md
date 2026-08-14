@@ -87,10 +87,9 @@ read your README and the script you wrote at midnight.
 ### What it's good at
 
 - **SQL transfers everywhere.** The same `SELECT` you learn on Postgres works on
-  MySQL, SQLite, DuckDB, Snowflake, BigQuery, and Spark, with small dialect
-  differences. Every BI tool speaks it, and `pandas.read_sql()` turns a query
-  straight into a DataFrame. Few skills in this field pay off across as many
-  tools.
+  MySQL, DuckDB, Snowflake, BigQuery, and Spark, with small dialect differences.
+  Every BI tool speaks it, and `pandas.read_sql()` turns a query straight into a
+  DataFrame. Few skills in this field pay off across as many tools.
 - **Joins mean you store each fact once.** An advisor's name lives in one row of
   one table. Correct a typo there and every query that touches it is correct
   from that moment on.
@@ -246,12 +245,13 @@ DuckDB belongs in neither box above, and it's worth meeting early because it
 deletes a step you have probably been doing by hand for years.
 
 It is a real relational database: SQL, tables, joins, window functions, all of
-it. It is also embedded the way SQLite is, so there's no server, no port, no
-user accounts, and no daemon to remember to start. `pip install duckdb` and
-you're done. The difference from SQLite is what it's tuned for. SQLite is built
-for many small reads and writes of individual rows; DuckDB stores data by column
-and processes it in batches, which is what makes it tear through aggregate
-queries over millions of rows on an ordinary laptop.
+it. It is also embedded, meaning it runs inside your own process, so there's no
+server, no port, no user accounts, and no daemon to remember to start. `pip
+install duckdb` and you're done. What sets it apart is what it's tuned for. The
+databases above store a row at a time, which suits looking up and updating
+individual records; DuckDB stores data by column and processes it in batches,
+which is what makes it tear through aggregate queries over millions of rows on
+an ordinary laptop.
 
 The part that changes how you work is that it queries data files directly.
 Nothing gets loaded or imported first.
@@ -310,7 +310,7 @@ between minutes and hours, and between a small egress bill and a memorable one.
       <rect x="470" y="142" width="156" height="36" rx="6" fill="#dbe3f0" stroke="#232D4B" stroke-width="1.5"/>
       <text x="548" y="165" text-anchor="middle" fill="#232D4B">s3://bucket/*.parquet</text>
       <rect x="470" y="188" width="156" height="36" rx="6" fill="#dbe3f0" stroke="#232D4B" stroke-width="1.5"/>
-      <text x="548" y="211" text-anchor="middle" fill="#232D4B">Postgres, SQLite</text>
+      <text x="548" y="211" text-anchor="middle" fill="#232D4B">Postgres, MySQL</text>
     </g>
     <text x="320" y="262" text-anchor="middle" fill="#6b7280" font-size="12">The data never moves. One query can span a local file, a bucket, and a database.</text>
   </g>
@@ -359,7 +359,7 @@ duckdb.sql("SELECT station, max(temp_c) FROM readings GROUP BY station").df()
 ```
 
 The connector part goes further than files. DuckDB can `ATTACH` a running
-Postgres, MySQL, or SQLite database and query it as though its tables were
+Postgres or MySQL database and query it as though its tables were
 local, which means one statement can join a Parquet file in a bucket against a
 table in your department's Postgres. That is usually the moment people stop
 thinking of it as a database and start thinking of it as the thing that talks to
