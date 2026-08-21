@@ -27,6 +27,7 @@ School of Data Science.
 - [**Using and Building Containers**](https://uvads.github.io/container-basics/)
 - [**Workflow Orchestration**](https://uvads.github.io/workflow-basics/)
 - [**Streaming Data**](https://github.com/UVADS/learn-kafka)
+- [**High Performance Computing**](https://uvads.github.io/hpc-basics/)
 
 ## Python Resources
 
