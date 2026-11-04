@@ -13,7 +13,8 @@ Guides, tutorials, and reference material for the tools we use across the
 School of Data Science.
 {: .fs-6 .fw-300 }
 
-[Browse on GitHub](https://github.com/UVADS){: .btn .btn-primary .fs-5 .mb-4 .mb-md-0 .mr-2 }
+[SDS on GitHub](https://github.com/UVADS){: .btn .btn-primary .fs-5 .mb-4 .mb-md-0 .mr-2 }
+[SDS Colloquium](https://uvads.github.io/colloquium/){: .btn .btn-primary .fs-5 .mb-4 .mb-md-0 .mr-2 }
 
 ---
 
